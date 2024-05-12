@@ -38,7 +38,7 @@ class bdd_vgl(Dataset):
 
     def __getitem__(self, idx):
         video_name, num_frames = self.video_list[idx].split(' ')
-
+        
         video, sat_image = self.get_sample(video_name, int(num_frames))
 
         # label = idx%self.batch_size
@@ -118,7 +118,7 @@ class bdd_vgl(Dataset):
         clip_len = int(num_frames/fps)
 
         # load meta data
-        meta_data_path = os.path.join(self.root, 'info', mode, video_name+'.json')
+        meta_data_path = os.path.join(self.root, 'list/info/', video_name+'.json')
         meta_data = json.load(open(meta_data_path, 'r'))
         gps_seq = meta_data['locations']
 
@@ -146,7 +146,7 @@ class bdd_vgl(Dataset):
         video_container = []
         for item in range(start_frame, start_frame + total_frames, skip_rate):
             image_name = str(item).zfill(4) + '.png'
-            image_path = os.path.join(self.root, 'video_data', mode, video_name+'.mov', image_name)
+            image_path = os.path.join(self.root, 'BDD_frames', mode, video_name+'.mov', image_name)
             current_image = Image.open(image_path).convert('RGB')
             video_container.append(current_image)
 
@@ -168,8 +168,6 @@ class bdd_vgl(Dataset):
         if start_sec > clip_len:
             print(start_sec)
             print(video_name)
-            print(t0)
-            print(t1)
             print(num_frames)
 
         # print(video_name)
@@ -189,7 +187,7 @@ class bdd_vgl(Dataset):
         clip_len = int(num_frames/fps)
 
         # load meta data
-        meta_data_path = os.path.join(self.root, 'info', mode, video_name+'.json')
+        meta_data_path = os.path.join(self.root, 'list/info', video_name+'.json')
         meta_data = json.load(open(meta_data_path, 'r'))
         gps_seq = meta_data['locations']
 
@@ -218,7 +216,7 @@ class bdd_vgl(Dataset):
         video_container = []
         for item in range(start_frame, start_frame + total_frames, skip_rate):
             image_name = str(item).zfill(4) + '.png'
-            image_path = os.path.join(self.root, 'video_data', mode, video_name+'.mov', image_name)
+            image_path = os.path.join(self.root, 'BDD_frames', mode, video_name+'.mov', image_name)
             current_image = Image.open(image_path).convert('RGB')
             video_container.append(current_image)
 
@@ -300,7 +298,7 @@ class bdd_vgl(Dataset):
         if not self.train:
             mode = 'val'
 
-        train_list = os.path.join(self.root, mode+'_day.list')
+        train_list = os.path.join(self.root, 'list/', mode+'_day.list')
     
         video_names = [line.rstrip('\n') for line in open(train_list, 'r')]
 

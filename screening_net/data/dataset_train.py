@@ -171,8 +171,6 @@ class bdd_vgl(Dataset):
         if start_sec > clip_len:
             print(start_sec)
             print(video_name)
-            print(t0)
-            print(t1)
             print(num_frames)
 
         # print(video_name)
@@ -188,49 +186,7 @@ class bdd_vgl(Dataset):
         mode = 'train'
         if not self.train:
             mode = 'val'
-
-        #clip_len = int(num_frames/fps)
-        
-        
-        # load meta data
-        #meta_data_path = os.path.join(self.root, 'info', mode, video_name+'.json')
-        #meta_data = json.load(open(meta_data_path, 'r'))
-        #gps_seq = meta_data['locations']
-
-        #start_gps, start_sec = self.get_start_sec(meta_data, gps_seq, clip_len)
-        #self.start_gps = start_gps
-
-        #total_frames = self.num_frames*skip_rate
-
-        #if total_frames > fps:
-        #    skip_rate = skip_rate -1
-        #    if skip_rate == 0:
-        #        skip_rate = 1
-        #    total_frames = 16*skip_rate
-
-        #try:
-        #    start_frame = random.randint(0, fps - total_frames) ## 32, 16 frames
-        #except:
-        #    start_frame = 0
-
-        #start_frame = start_sec*fps + start_frame - 15 # centralize the gps location
-        #start_frame = start_sec*fps + start_frame
-
-        #if start_frame < 0:
-        #    start_frame = 0
-
-        #video_container = []
-        #for item in range(start_frame, start_frame + total_frames, skip_rate):
-        #    image_name = str(item).zfill(4) + '.png'
-        #    image_path = os.path.join(self.root, 'video_data', mode, video_name+'.mov', image_name)
-        #    current_image = Image.open(image_path).convert('RGB')
-        #    video_container.append(current_image)
-        
-        
-        #aerial_sq = random.sample(range(0, 40), self.num_frames)
-        #aerial_sq = random.sample(range(0, 40), 8)
-        #print('aerial_sq',aerial_sq)
-        root='/home/c3-0/shruti/data/bdd_vgl/satelite_data'
+        root='/public/home/v-wangqw/dataset/GAMa_dataset/satelite_data'
         anchor = random.randint(0,4)
         
         sq_container = []
@@ -300,12 +256,6 @@ class bdd_vgl(Dataset):
         
     def get_sat_imageA(self, mode, video_name):
         sat_image = None
-        # print(start_gps)
-        # print(mode)
-        #image_name = str(start_gps) + '.jpeg'
-        # print('3:', mode, video_name, start_gps)
-        root='/home/c3-0/shruti/data/bdd_vgl/satelite_data'
-        #s_path = os.path.join(root, mode, video_name + '.jpeg')
         s_path = os.path.join(self.root, 'satelite_data', mode, video_name + '.jpeg')
         img_path = s_path
         #img_path = os.path.join(s_path, '%02d.jpeg' % start_gps) 
@@ -359,7 +309,7 @@ class bdd_vgl(Dataset):
         if not self.train:
             mode = 'val'
 
-        train_list = os.path.join(self.root, mode+'_day.list')
+        train_list = os.path.join(self.root, 'list/', mode+'_day.list')
     
         video_names = [line.rstrip('\n') for line in open(train_list, 'r')]
 

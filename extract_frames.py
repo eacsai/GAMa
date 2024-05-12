@@ -2,9 +2,7 @@ import cv2
 import numpy as np
 import os
 import sys
-
-import params as params
-
+import shutil
 
 def extract_frames(vid, dst):
     print(vid)
@@ -22,6 +20,7 @@ def extract_frames(vid, dst):
         #print('Read a new frame: ', success)
         count += 1
 
+    vidcap.release()  # 释放资源
     return count
 
 def master(v_list, mode):
@@ -30,52 +29,55 @@ def master(v_list, mode):
     #pack_path =  params.raw_videos_val
     
     videos = open(v_list, 'r')
-
-    fname = mode + '_4.list'
-    fp = open(fname, 'w')
     
-    pack_path =  params.raw_videos_train
-    base_path = '/home/c3-0/shruti/data/BDD_frames/frames144_256/train/'
+    pack_path =  '/public/home/v-wangqw/dataset/GAMa_dataset/videos/train/'
+    base_path = '/public/home/v-wangqw/dataset/GAMa_dataset/BDD_frames/train/'
         
     if mode == 'val':
-        pack_path =  params.raw_videos_val
-        base_path = '/home/c3-0/shruti/data/BDD_frames/frames144_256/val/'
+        pack_path =  '/public/home/v-wangqw/dataset/GAMa_dataset/videos/train/'
+        base_path = '/public/home/v-wangqw/dataset/GAMa_dataset/BDD_frames/val/'
 
     cnt = 0
     for sample in videos:
+        if cnt > 1000:
+            break
         sample = sample.rstrip('\n')
         
         v_name, num_frames = sample.split()
           
-        if int(num_frames) < 1200:
-            print(num_frames)
-            print(v_name)
-            cnt += 1
+        print(num_frames)
+        print(v_name)
+        cnt += 1
+    
+        sample_path = os.path.join(pack_path, v_name+'.mov')
+
+        dst = os.path.join(base_path, v_name+'.mov')
+
+        # 检查文件夹是否存在，如果存在则删除
+        if os.path.exists(dst):
+            shutil.rmtree(dst)  # 删除文件夹及其所有内容
+
+        # 创建新的文件夹
+        os.makedirs(dst)
         
-            sample_path = os.path.join(pack_path, v_name+'.mov')
-    
-            dst = os.path.join(base_path, v_name+'.mov')
-    
-            num_frames = extract_frames(sample_path, dst)
-            fp.write('{} {}\n'.format(v_name, num_frames))
-        else:
-            fp.write('{}\n'.format(sample))
-            pass
+        num_frames = extract_frames(sample_path, dst)
+
+
     
     print(cnt)
-
-    fp.close()
     videos.close()
 
 if __name__ == '__main__':
     v_list = None
-    if len(sys.argv) > 1:
-        mode = str(sys.argv[1])
-    else:
-        print('mode missing!')
-        exit(0)
+    
+    mode = 'train'
+    # if len(sys.argv) > 1:
+    #     mode = str(sys.argv[1])
+    # else:
+    #     print('mode missing!')
+    #     exit(0)
 
-    v_list = mode + '_3.list'
+    v_list = './list/' + mode + '_day.list'
 
     master(v_list, mode)
 

@@ -91,7 +91,7 @@ def set_loader(opt):
 
     train_loader = DataLoader(
         train_dataset,
-        sampler=train_sampler(train_dataset),
+        # sampler=train_sampler(train_dataset),
         batch_size=opt.batch_size,
         num_workers=opt.num_workers,
         drop_last=True,

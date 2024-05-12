@@ -30,7 +30,7 @@ def parse_option():
                         help='print frequency')
     parser.add_argument('--save_freq', type=int, default=10,
                         help='save frequency')
-    parser.add_argument('--batch_size', type=int, default=8,
+    parser.add_argument('--batch_size', type=int, default=1,
                         help='batch_size')
     parser.add_argument('--num_workers', type=int, default=4,
                         help='num of workers to use')
@@ -56,7 +56,7 @@ def parse_option():
                         choices=['cifar10', 'cifar100', 'path', 'bdd_vgl'], help='dataset')
     parser.add_argument('--mean', type=str, help='mean of dataset in path in form of str tuple')
     parser.add_argument('--std', type=str, help='std of dataset in path in form of str tuple')
-    parser.add_argument('--data_folder', type=str, default='/home/c3-0/shruti/data/bdd_vgl/', help='path to custom dataset')
+    parser.add_argument('--data_folder', type=str, default='/public/home/v-wangqw/dataset/GAMa_dataset/', help='path to custom dataset')
     parser.add_argument('--video_size_h', type=int, default=112, help='parameter for RandomResizedCrop')
     parser.add_argument('--video_size_w', type=int, default=224, help='parameter for RandomResizedCrop')
     parser.add_argument('--image_size_h', type=int, default=224, help='parameter for RandomResizedCrop')

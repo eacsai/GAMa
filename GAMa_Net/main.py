@@ -28,7 +28,7 @@ def parse_option():
                         help='print frequency')
     parser.add_argument('--save_freq', type=int, default=10,
                         help='save frequency')
-    parser.add_argument('--batch_size', type=int, default=16,
+    parser.add_argument('--batch_size', type=int, default=1,
                         help='batch_size')
     parser.add_argument('--num_workers', type=int, default=1,
                         help='num of workers to use')
@@ -54,7 +54,7 @@ def parse_option():
                         choices=['cifar10', 'cifar100', 'path', 'bdd_vgl'], help='dataset')
     parser.add_argument('--mean', type=str, help='mean of dataset in path in form of str tuple')
     parser.add_argument('--std', type=str, help='std of dataset in path in form of str tuple')
-    parser.add_argument('--data_folder', type=str, default='/home/c3-0/shruti/data/bdd_vgl/', help='path to custom dataset')
+    parser.add_argument('--data_folder', type=str, default='/public/home/v-wangqw/dataset/GAMa_dataset/', help='path to custom dataset')
     parser.add_argument('--video_size_h', type=int, default=112, help='parameter for RandomResizedCrop')
     parser.add_argument('--video_size_w', type=int, default=224, help='parameter for RandomResizedCrop')
     parser.add_argument('--image_size_h', type=int, default=224, help='parameter for RandomResizedCrop')
@@ -171,18 +171,18 @@ def train(train_loader, model, criterion, optimizer, epoch, opt):
         data_time.update(time.time() - end)
 
         if torch.cuda.is_available():
-            videos = videos.cuda(non_blocking=True)
+            videos = videos.cuda(non_blocking=True)  # [1, 2, 3, 8, 112, 224]
             images = images.cuda(non_blocking=True)
             #labels = labels.cuda(non_blocking=True)
             
             
         # add hard negatives to batch size
-        videos_p, videos_n = torch.split(videos, [1,1], dim=1)
+        videos_p, videos_n = torch.split(videos, [1,1], dim=1) # [1, 1, 3, 8, 112, 224] and [1, 1, 3, 8, 112, 224]
         images_p, images_n = torch.split(images, [1,1], dim=1)
         # labels_p, labels_n = torch.split(labels, [1,1], dim=1)
 
         # print(videos_p.shape)
-        videos = torch.squeeze(torch.cat([videos_p, videos_n], dim=0), 1)
+        videos = torch.squeeze(torch.cat([videos_p, videos_n], dim=0), 1) # [2, 3, 8, 112, 224]
         images = torch.squeeze(torch.cat([images_p, images_n], dim=0), 1)
         # labels = torch.squeeze(torch.cat([labels_p, labels_n], dim=0), 1)
 
