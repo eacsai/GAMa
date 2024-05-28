@@ -186,7 +186,7 @@ class bdd_vgl(Dataset):
         mode = 'train'
         if not self.train:
             mode = 'val'
-        root='/public/home/v-wangqw/dataset/GAMa_dataset/satelite_data'
+        root='/public/home/shiyj2-group/video_localization/GAMa_dataset/satelite_data'
         anchor = random.randint(0,4)
         
         sq_container = []
